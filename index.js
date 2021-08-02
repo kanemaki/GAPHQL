@@ -11,11 +11,19 @@ const typeDefs = gql`
         vip: Boolean
     }
 
+    type Produto {
+        nome: String!
+        preco: Float!
+        desconto: Float
+        precoComDesconto: Float
+    }
+
     # Pontos de entrada da minha API!
     type Query {
         ola: String!
         horaAtual: Date!
-        usuarioLogado: Usuario    
+        usuarioLogado: Usuario
+        produtoEmDestaque: Produto    
     }
 `
 const resolvers = {
@@ -23,7 +31,18 @@ const resolvers = {
         salario(usuario){
             return usuario.salario_real
         }
-    },    
+    },
+    
+    Produto: {
+        precoComDesconto(produto){
+            if(produto.desconto){
+                return produto.preco * (1 - produto.desconto)
+            } else {
+                return produto.preco
+            }
+        }
+    },
+    
     Query: {
         ola() {
             return 'Retornando uma string de teste'
@@ -43,8 +62,15 @@ const resolvers = {
                 vip: true
 
             }
-
-        }
+        },
+        
+        produtoEmDestaque() {
+            return {
+                nome: 'PlayStation 5',
+                preco: 499.99,
+                desconto: 0.10
+            }
+        },
 
     }
 }
