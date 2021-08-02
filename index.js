@@ -3,26 +3,26 @@ const usuarios = [{
     id: 1,
     nome: 'Joao Silva',
     email: 'jsilva@email.com',
-    idade: 29
+    idade: 29,
+    perfil_id: 1
 },{
     id: 2,
     nome: 'Rafael Junior',
     email: 'rafajun@email.com',
-    idade: 31
+    idade: 31,
+    perfil_id: 2
 },{
     id: 3,
     nome: 'Ada Lovelace',
     email: 'adalove@email.com',
-    idade: 24
+    idade: 24,
+    perfil_id: 1
 }]
 
-const perfis = [{
-    id: 1,
-    nome: 'Comum'
-},{
-    id: 2,
-    nome: 'Administrador'
-}]
+const perfis = [
+    { id: 1, nome: 'Comum'},
+    { id: 2, nome: 'Administrador'}
+]
 
 const typeDefs = gql`
     scalar Date
@@ -34,6 +34,7 @@ const typeDefs = gql`
         idade: Int
         salario: Float
         vip: Boolean
+        perfil: Perfil
     }
 
     type Produto {
@@ -65,6 +66,12 @@ const resolvers = {
     Usuario: {
         salario(usuario){
             return usuario.salario_real
+        },
+
+        perfil(usuario) {
+            const selc = perfis
+                .filter(p => p.id === usuario.perfil_id)
+            return selc ? selc[0] : null    
         }
     },
     
@@ -129,12 +136,11 @@ const resolvers = {
             return perfis
         },
 
-        perfil(_, args) {
+        perfil(_, {id}) {
             const selec = perfis
-                .filter(p => p.id == args.id)
+                .filter(p => p.id == id)
             return selec ? selec[0] : null    
         },
-
 
     }
 }
