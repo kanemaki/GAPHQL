@@ -19,6 +19,11 @@ const typeDefs = gql`
     }
 `
 const resolvers = {
+    Usuario: {
+        salario(usuario){
+            return usuario.salario_real
+        }
+    },    
     Query: {
         ola() {
             return 'Retornando uma string de teste'
@@ -34,7 +39,7 @@ const resolvers = {
                 nome:  'kanemaki',
                 email: 'kanemaki@kanemaki.com',
                 idade: 41,
-                salario: 1234.56,
+                salario_real: 1234.56,
                 vip: true
 
             }
