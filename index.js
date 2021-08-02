@@ -2,14 +2,20 @@ const {ApolloServer, gql} = require('apollo-server')
 const typeDefs = gql`
     # Pontos de entrada da minha API!
     type Query {
-        ola: String    
+        ola: String
+        horaAtual: String    
     }
 `
 const resolvers = {
     Query: {
         ola() {
             return 'Retornando uma string de teste'
+        },
+
+        horaAtual() {
+            return new Date().toString();
         }
+
     }
 }
 
