@@ -16,6 +16,14 @@ const usuarios = [{
     idade: 24
 }]
 
+const perfis = [{
+    id: 1,
+    nome: 'Comum'
+},{
+    id: 2,
+    nome: 'Administrador'
+}]
+
 const typeDefs = gql`
     scalar Date
 
@@ -35,6 +43,11 @@ const typeDefs = gql`
         precoComDesconto: Float
     }
 
+    type Perfil {
+        id: ID!
+        nome: String!
+    }
+
     # Pontos de entrada da minha API!
     type Query {
         ola: String!
@@ -43,7 +56,9 @@ const typeDefs = gql`
         produtoEmDestaque: Produto
         numerosMegaSena: [Int!]!  
         usuarios: [Usuario]
-        usuario(id: ID): Usuario  
+        usuario(id: ID): Usuario
+        perfis: [Perfil]
+        perfil(id: ID): Perfil  
     }
 `
 const resolvers = {
@@ -108,7 +123,18 @@ const resolvers = {
             const selecionados = usuarios
                 .filter(u => u.id == args.id)
             return selecionados ? selecionados[0] : null    
-        }
+        },
+
+        perfis() {
+            return perfis
+        },
+
+        perfil(_, args) {
+            const selec = perfis
+                .filter(p => p.id == args.id)
+            return selec ? selec[0] : null    
+        },
+
 
     }
 }
